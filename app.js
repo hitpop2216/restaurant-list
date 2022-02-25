@@ -68,6 +68,16 @@ app.post('/restaurants/:id/edit', (req, res) => {
     .catch(err => console.log(err))
 })
 
+// 刪除
+app.post('/restaurants/:id/delete', (req, res) => {
+  const id = req.params.id
+  Restaurant
+    .findById(id)
+    .then(item => item.remove())
+    .then(() => res.redirect('/'))
+    .catch(err => console.log(err))
+})
+
 // 搜尋
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim().toLowerCase()
