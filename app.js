@@ -44,6 +44,30 @@ app.get('/restaurants/:id', (req, res) => {
     .catch(err => console.log(err))
 })
 
+// 修改
+app.get('/restaurants/:id/edit', (req, res) => {
+  const id = req.params.id
+  Restaurant
+    .findById(id)
+    .lean()
+    .then(restaurant => res.render('edit', { restaurant }))
+    .catch(err => console.log(err))
+})
+app.post('/restaurants/:id/edit', (req, res) => {
+  const id = req.params.id
+  const restaurantData = req.body
+  Restaurant
+    .findById(id)
+    .then(restaurant =>{
+      for (let item in restaurantData) {
+        restaurant[item] = restaurantData[item]
+      }
+      return restaurant.save()
+    })
+    .then(() => res.redirect(`/restaurants/${id}`))
+    .catch(err => console.log(err))
+})
+
 // 搜尋
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim().toLowerCase()
