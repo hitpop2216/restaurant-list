@@ -19,10 +19,12 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
-app.use((req, res, next)=>{
+usePassport(app)
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
   next()
 })
-usePassport(app)
 app.use(routes)
 
 app.listen(3000, () =>{

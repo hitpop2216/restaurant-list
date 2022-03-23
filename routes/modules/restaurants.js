@@ -3,10 +3,10 @@ const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 
 // 新增
-router.get('/restaurants/new', (req, res) => {
+router.get('/new', (req, res) => {
   res.render('new')
 })
-router.post('/restaurants', (req, res) => {
+router.post('/', (req, res) => {
   Restaurant
     .create(req.body)
     .then(() => res.redirect('/'))

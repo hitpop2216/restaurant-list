@@ -62,6 +62,6 @@ router.post('/login', passport.authenticate('local',{
 // 登出
 router.get('/logout', (req, res) => {
   req.logout()
-  res.render('login')
+  res.redirect('/users/login')
 })
 module.exports = router
