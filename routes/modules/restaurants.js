@@ -7,17 +7,21 @@ router.get('/new', (req, res) => {
   res.render('new')
 })
 router.post('/', (req, res) => {
+  const userId = req.user._id
+  const data = req.body
+  data.userId = userId
   Restaurant
-    .create(req.body)
+    .create(data)
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
 
 // 瀏覽
 router.get('/:id', (req, res) => {
-  const id = req.params.id
+  const userId = req.user._id
+  const _id = req.params.id
   Restaurant
-    .findById(id)
+    .findOne({_id, userId})
     .lean()
     .then(restaurant => res.render('detail', { restaurant }))
     .catch(err => console.log(err))
@@ -25,33 +29,30 @@ router.get('/:id', (req, res) => {
 
 // 修改
 router.get('/:id/edit', (req, res) => {
-  const id = req.params.id
+  const userId = req.user._id
+  const _id = req.params.id
   Restaurant
-    .findById(id)
+    .findOne({ _id, userId })
     .lean()
     .then(item => res.render('edit', { restaurant: item }))
     .catch(err => console.log(err))
 })
 router.put('/:id', (req, res) => {
-  const id = req.params.id
+  const userId = req.user._id
+  const _id = req.params.id
+  const data = req.body
   Restaurant
-    .findById(id)
-    .then(item => {
-      for (let i in req.body) {
-        item[i] = req.body[i]
-      }
-      return item.save()
-    })
+    .findOneAndUpdate({ _id, userId }, data)
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
 
 // 刪除
 router.delete('/:id', (req, res) => {
-  const id = req.params.id
+  const userId = req.user._id
+  const _id = req.params.id
   Restaurant
-    .findById(id)
-    .then(item => item.remove())
+    .findOneAndRemove({_id, userId})
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
