@@ -1,3 +1,6 @@
+if(process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const express = require('express')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
@@ -15,7 +18,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(flash())
 app.use(session({
-  secret: 'Tang',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
