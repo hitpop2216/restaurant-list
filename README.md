@@ -4,7 +4,7 @@
 
 ## 介紹
 
-紀錄屬於自己的餐廳清單，可以瀏覽餐廳、查看詳細資訊、甚至連結到地圖。
+紀錄屬於自己的餐廳清單，可以在此網站上擁有自己的帳號管理餐廳名單，並且能夠瀏覽餐廳、查看詳細資訊、甚至連結到地圖。
 
 ### 功能
 
@@ -15,6 +15,9 @@
 - 新增餐廳
 - 編輯餐廳
 - 刪除餐廳
+- 登入與登出
+- 註冊帳號
+- 可用 Facebook 登入
 
 ## 開始使用
 
@@ -29,7 +32,7 @@
 4. 安裝完畢後，繼續輸入：
 
    ```bash
-   npm run start
+   npm run dev
    ```
 
 5. 若看見此行訊息則代表順利運行，打開瀏覽器進入到以下網址
@@ -38,7 +41,12 @@
    Listening on http://localhost:3000
    ```
 
-6. 若欲暫停使用
+6. 建立種子使用者資料，種子使用者密碼在 models/seeds/restaurantSeeder.js
+   ```bash
+   npm run seed
+   ```
+
+7. 若欲暫停使用
 
    ```bash
    ctrl + c
@@ -46,11 +54,15 @@
 
 ## 開發工具
 
-- Node.js 14.18.0
-- Express 4.17.1
-- Express-Handlebars 5.3.3
-- Bootstrap 4.3.1
-- Font-awesome 5.8.1
+- node.js 14.18.0
+- express 4.17.3
+- express-Handlebars 3.0.0
+- bootstrap 4.3.1
+- font-awesome 5.8.1
+- passport 0.5.2
+- passport-local 3.0.0
+- passport-facebook 3.0.0
+- bcryptjs 2.4.3
 
 - MongoDB
 - mongoose 6.0.5

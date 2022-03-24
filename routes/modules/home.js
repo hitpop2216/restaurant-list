@@ -14,6 +14,7 @@ router.get('/', (req, res) => {
 
 // 搜尋
 router.get('/search', (req, res) => {
+  const userId = req.user._id
   const keyword = req.query.keyword.trim().toLowerCase()
   const sort = req.query.sort
   let sortingMethod = {}
@@ -32,12 +33,12 @@ router.get('/search', (req, res) => {
       break;
   }
   Restaurant
-    .find()
+    .find({userId})
     .lean()
     .sort(sortingMethod)
     .then(items => {
       const restaurants = items.filter(item => item.name.trim().toLowerCase().includes(keyword) || item.category.trim().toLowerCase().includes(keyword))
-      res.render('index', { restaurantList: restaurants})
+      res.render('index', { restaurantList: restaurants, keyword})
     })
     .catch(err => console.log(err))
 })
