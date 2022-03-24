@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs')
 const User = require('../../models/user')
 const Restaurant = require('../../models/restaurant')
 const passport = require('passport')
-const { rawListeners } = require('../../models/user')
 
 // 註冊
 router.get('/register', (req, res) => {
@@ -12,30 +11,34 @@ router.get('/register', (req, res) => {
 })
 router.post('/register', (req, res) => {
   const {name, email, password, confirmPassword} = req.body
-  if (!name|| !email|| !password|| !confirmPassword) {
-    console.log('所有欄位必填')
-    return res.render('register', {
-      name,
-      email,
-      password,
-      confirmPassword
-    })
+  const errors = []
+  if (!email|| !password|| !confirmPassword) {
+    errors.push({ message: '除名字外，其他欄位必填。'})
   }
   if(password!==confirmPassword) {
-    console.log('密碼與確認密碼不相符！')
+    errors.push({ message: '密碼與確認密碼不相符！' })
+  }
+  if(errors.length) {
     return res.render('register', {
       name,
       email,
       password,
-      confirmPassword
+      confirmPassword,
+      errors
     })
   }
   User
     .findOne({email})
     .then(user => {
       if(user) {
-        console.log('使用者已存在。')
-        return res.redirect('/users/register')
+        errors.push({ message: '使用者已存在。' })
+        return res.render('register', {
+          name,
+          email,
+          password,
+          confirmPassword,
+          errors
+        })
       }
       return bcrypt
         .genSalt(10)
@@ -62,6 +65,7 @@ router.post('/login', passport.authenticate('local',{
 // 登出
 router.get('/logout', (req, res) => {
   req.logout()
+  req.flash('success_msg', '成功登出！')
   res.redirect('/users/login')
 })
 module.exports = router
