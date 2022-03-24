@@ -8,15 +8,15 @@ module.exports = app => {
   app.use(passport.initialize())
   app.use(passport.session())
 
-  passport.use(new LocalStrategy({usernameField:'email'}, (email, password, done)=>{
+  passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true}, (req, email, password, done)=>{
     User
       .findOne({email})
       .then(user => {
-        if(!user) done(null, false, {message:'無此使用者。'})
+        if (!user) done(null, false, req.flash('warning_msg', '無此使用者'))
         return bcrypt
           .compare(password, user.password)
           .then(isMatch => {
-            if(!isMatch) return done(null, false, {message:'帳號或密碼錯誤！'})
+            if (!isMatch) return done(null, false, req.flash('warning_msg', '帳號或密碼錯誤。'))
             return done(null, user)
           })
       })
@@ -26,7 +26,7 @@ module.exports = app => {
   passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_ID,
     clientSecret: process.env.FACEBOOK_SECRET,
-    callbackURL: "http://localhost:3000/auth/facebook/callback",
+    callbackURL: process.env.FACEBOOK_CALLBACK,
     profileFields: ['displayName', 'email']
   }, (accessToken, refreshToken, profile, done) => {
     const {name, email} = profile._json
