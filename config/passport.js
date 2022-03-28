@@ -1,6 +1,7 @@
 const passport = require('passport')
-const LocalStrategy = require('passport-local')
-const FacebookStrategy = require('passport-facebook')
+const LocalStrategy = require('passport-local').Strategy
+const FacebookStrategy = require('passport-facebook').Strategy
+const GoogleStrategy = require('passport-google-oauth20').Strategy
 const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 
@@ -31,9 +32,36 @@ module.exports = app => {
   }, (accessToken, refreshToken, profile, done) => {
     const {name, email} = profile._json
     User
-      .findOne({email})
+      .findOne({email, name})
       .then(user => {
         if(user) return done(null, user)
+        const randomPassword = Math.random().toString(36).slice(-8)
+        bcrypt
+          .genSalt(10)
+          .then(salt => bcrypt.hash(randomPassword, salt))
+          .then(hash => User.create({
+            name,
+            email,
+            password: hash
+          }))
+          .then(user => done(null, user))
+          .catch(err => done(err, false))
+      })
+  }
+  ))
+
+  passport.use(new GoogleStrategy({
+    clientID: '465998649430-ntsn5p5v2avjl3jp1rngiajjfv77rpcc.apps.googleusercontent.com',
+    clientSecret: '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',
+    callbackURL: "http://localhost:3000/auth/google/callback",
+    profileFields: ['displayName', 'email']
+  }, (accessToken, refreshToken, profile, done) => {
+    console.log(profile)
+    const { name, email } = profile._json
+    User
+      .findOne({ email, name })
+      .then(user => {
+        if (user) return done(null, user)
         const randomPassword = Math.random().toString(36).slice(-8)
         bcrypt
           .genSalt(10)
