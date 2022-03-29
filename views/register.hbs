@@ -6,19 +6,19 @@
       <form action="/users/register" method="POST">
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" name="name" name="name" placeholder="Enter Name" class="form-control" value="{{name}}">
+          <input type="text" name="name" id="name" placeholder="Enter Name" class="form-control" value="{{name}}">
         </div>
         <div class="form-group">
           <label for="email">Email<span class="text-danger">*</span></label>
-          <input type="email" name="email" name="email" placeholder="Enter Email" class="form-control" value="{{email}}">
+          <input type="email" name="email" id="email" placeholder="Enter Email" class="form-control" value="{{email}}">
         </div>
         <div class="form-group">
           <label for="password">Password<span class="text-danger">*</span></label>
-          <input type="password" name="password" name="password" placeholder="Enter Password" class="form-control" value="{{password}}">
+          <input type="password" name="password" id="password" placeholder="Enter Password" class="form-control" value="{{password}}">
         </div>
         <div class="form-group">
           <label for="confirmPassword">Confirm Password<span class="text-danger">*</span></label>
-          <input type="password" name="confirmPassword" name="confirmPassword" placeholder="Confirm Password" class="form-control" value="{{confirmPassword}}">
+          <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="form-control" value="{{confirmPassword}}">
         </div>
         <button type="submit" class="btn btn-info btn-block">Register</button>
         <div class="divider d-flex align-items-center my-4">

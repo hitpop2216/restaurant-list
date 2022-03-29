@@ -92,4 +92,53 @@ router.post('/forget', (req, res) => {
         .catch(err => console.log(err))
     })
 })
+
+// 修改密碼
+router.get('/reset', (req, res) => {
+  res.render('reset')
+})
+router.post('/reset', (req, res) => {
+  const {email, oldPassword, newPassword, confirmNewPassword} = req.body
+  const errors = []
+  if (!email || !oldPassword || !newPassword || !confirmNewPassword) {
+    errors.push({ message: '所有欄位必填。' })
+  }
+  if (newPassword !== confirmNewPassword) {
+    errors.push({ message: '新密碼與確認密碼不符。' })
+  }
+  if (errors.length) {
+    return res.render('reset', {
+      email,
+      oldPassword,
+      newPassword,
+      confirmNewPassword,
+      errors
+    })
+  }
+  User
+    .findOne({ email })
+    .then(user => {
+      if (!user) {
+        req.flash('warning_msg', '無此使用者。')
+        return res.render('reset',{email})
+      }
+      bcrypt
+        .compare(oldPassword, user.password)
+        .then(isMatch=> {
+          if(!isMatch) {
+            req.flash('warning_msg', '舊密碼錯誤。')
+            return res.redirect('/users/reset')
+          }
+          return bcrypt
+            .genSalt(10)
+            .then(salt => bcrypt.hash(newPassword, salt))
+            .then(hash => User.findOneAndUpdate({ email }, { password: hash }))
+            .then(() => {
+              req.flash('success_msg', '密碼更改成功！')
+              return res.redirect('/users/login')
+            })
+            .catch(err => console.log(err))
+        })
+    })
+})
 module.exports = router

@@ -6,11 +6,11 @@
       <form action="/users/login" method="POST">
         <div class="form-group">
           <label for="email">Email<span class="text-danger">*</span></label>
-          <input type="email" name="email" name="email" placeholder="Enter Email" class="form-control" required>
+          <input type="email" name="email" id="email" placeholder="Enter Email" class="form-control" required>
         </div>
         <div class="form-group">
           <label for="password">Password<span class="text-danger">*</span></label>
-          <input type="password" name="password" name="password" placeholder="Enter Password" class="form-control" required>
+          <input type="password" name="password" id="password" placeholder="Enter Password" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-info btn-block">Login</button>
         <div class="divider d-flex align-items-center my-4">
@@ -28,6 +28,7 @@
       <p class="lead mt-3 d-flex justify-content-around">
         <span>No Account? <a href="/users/register">Register</a></span>
         <span><a href="/users/forget">Forget Password</a></span></span>
+        <span><a href="/users/reset">Reset Password</a></span></span>
       </p>
     </div>
   </div>
