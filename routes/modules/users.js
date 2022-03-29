@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')
 const User = require('../../models/user')
 const Restaurant = require('../../models/restaurant')
 const passport = require('passport')
+const nodemailer = require('../../config/nodemailer')
 
 // 註冊
 router.get('/register', (req, res) => {
@@ -69,5 +70,26 @@ router.get('/logout', (req, res) => {
   req.logout()
   req.flash('success_msg', '成功登出！')
   res.redirect('/users/login')
+})
+
+// 忘記密碼
+router.get('/forget', (req, res) => {
+  res.render('forget')
+})
+router.post('/forget', (req, res) => {
+  const {email} = req.body
+  User
+    .findOne({email})
+    .then(user => {
+      if(!user) return res.redirect('/users/forget')
+      const randomPassword = Math.random().toString(36).slice(-8)
+      return bcrypt
+        .genSalt(10)
+        .then(salt => bcrypt.hash(randomPassword, salt))
+        .then(hash => User.findOneAndUpdate({email}, {password: hash}))
+        .then(() => nodemailer(email, randomPassword))
+        .then(() => res.redirect('/users/login'))
+        .catch(err => console.log(err))
+    })
 })
 module.exports = router
