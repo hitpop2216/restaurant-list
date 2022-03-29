@@ -4,7 +4,7 @@ module.exports = (email, randomPassword) => {
     service: 'gmail',
     auth: {
       user: 'hitpop2216@gmail.com',
-      pass: 'hgggiuiaqjedkavb',
+      pass: process.env.NODEMAILER_PASS,
     }
   })
 
