@@ -49,12 +49,11 @@
    npm run seed
    ```
 8. 測試種子資料
-| 名字 |  帳號  | 密碼 |
-|:-----|:--------:|------:|
-| user1   | **user1.example.com** | 12345678 |
-| L1   |  `code`  |   $12 |
-| L2   | _italic_ |    $1 |
-
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
 7. 若欲暫停使用
 
    ```bash
