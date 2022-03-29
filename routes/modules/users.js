@@ -81,14 +81,20 @@ router.post('/forget', (req, res) => {
   User
     .findOne({email})
     .then(user => {
-      if(!user) return res.redirect('/users/forget')
+      if(!user) {
+        req.flash('warning_msg', '無此使用者。')
+        return res.redirect('/users/forget')
+      }
       const randomPassword = Math.random().toString(36).slice(-8)
       return bcrypt
         .genSalt(10)
         .then(salt => bcrypt.hash(randomPassword, salt))
         .then(hash => User.findOneAndUpdate({email}, {password: hash}))
         .then(() => nodemailer(email, randomPassword))
-        .then(() => res.redirect('/users/login'))
+        .then(() => {
+          req.flash('success_msg', '新密碼已成功寄出！')
+          return res.redirect('/users/login')
+        })
         .catch(err => console.log(err))
     })
 })
