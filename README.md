@@ -49,10 +49,11 @@
    npm run seed
    ```
 8. 測試種子資料
-Markdown | Less | Pretty
---- | --- | ---
-*Still* | `renders` | **nicely**
-1 | 2 | 3
+
+| Name | Email | Password |
+| ------------- | :---: | -------- |
+| user1          | user1@example.com| 12345678  |
+| user2          | user2@example.com| 12345678  |
 
 7. 若欲暫停使用
 
