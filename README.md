@@ -18,6 +18,9 @@
 - 登入與登出
 - 註冊帳號
 - 可用 Facebook 登入
+- 可用 Google 登入
+- 使用者忘記密碼可以寄送隨機產生的密碼給使用者
+- 使用者可以重設密碼
 
 ## 開始使用
 
@@ -41,10 +44,16 @@
    Listening on http://localhost:3000
    ```
 
-6. 建立種子使用者資料，種子使用者密碼在 models/seeds/restaurantSeeder.js
+6. 建立種子使用者資料
    ```bash
    npm run seed
    ```
+8. 測試種子資料
+
+| Name | Email | Password |
+| ------------- | :---: | -------- |
+| user1          | user1@example.com| 12345678  |
+| user2          | user2@example.com| 12345678  |
 
 7. 若欲暫停使用
 
